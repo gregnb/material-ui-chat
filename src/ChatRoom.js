@@ -112,13 +112,17 @@ ChatText = withStyles(chatTextStyles)(ChatText);
 
 const chatToolbarStyles = theme => ({
   chatToolbarRoot: {
+    color: '#FFF',
     margin: '8px',
-    backgroundColor: '#0367B4',
     minHeight: '32px',
-    color: '#FFF'
+    backgroundColor: '#23232F',
+    borderRadius: '2px'
   },
   innerContent: {
     width: '100%',
+  },
+  chatTitle: {
+    margin: '0 auto'
   }
 });
 
@@ -130,7 +134,7 @@ class ChatToolbar extends React.Component {
 
     return (
       <Toolbar disableGutters={true} className={classes.chatToolbarRoot}>
-        <Typography variant="title" color="inherit">
+        <Typography variant="title" className={classes.chatTitle} color="inherit">
           Now talking in "Wonderful Chatroom"
         </Typography>
       </Toolbar>
