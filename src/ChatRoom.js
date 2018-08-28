@@ -17,7 +17,15 @@ import Typography from '@material-ui/core/Typography';
 const peopleStyles = theme => ({
   root: {
     overflowY: 'scroll',
-    height: '100%'
+    height: '100%',
+    '&::-webkit-scrollbar': {
+      width: '5px',
+      height: '8px',
+      backgroundColor: '#FFF'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#0595DD'
+    },
   }
 });
 
