@@ -9,11 +9,14 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Input from '@material-ui/core/Input';
-
+import SendIcon from '@material-ui/icons/Send';
+import Divider from '@material-ui/core/Divider';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 const peopleStyles = theme => ({
   root: {
-    overflow: 'scroll',
+    overflowY: 'scroll',
     height: '100%'
   }
 });
@@ -38,10 +41,13 @@ class PeopleList extends React.Component {
     return (
       <List className={classes.root}>
         {images.map((item, index) => (
-          <ListItem key={index} dense button>
-            <Avatar alt='Remy Sharp' src={item.avatar} />
-            <ListItemText primary={item.name} />
-          </ListItem>
+          <React.Fragment>
+            <ListItem key={index} dense button>
+              <Avatar alt='Remy Sharp' src={item.avatar} />
+              <ListItemText primary={item.name} />
+            </ListItem>
+            {index !== images.length-1 && <Divider key={index} />}
+          </React.Fragment>
         ))}
      </List>
     );
@@ -57,11 +63,22 @@ PeopleList = withStyles(peopleStyles)(PeopleList);
 const chatTextStyles = (theme) => ({
   root: {
     margin: '8px',
+    height: 'calc(100% - 64px)'
   },
-  textInputPaper: {
+  chatInputPaper: {
+    height: 'calc(100% - 64px)'
   },
-  textInput: {
+  chatInput: {
     padding: '16px'
+  },
+  composeInputPaper: {
+    marginTop: '16px'
+  },
+  composeInput: {
+    padding: '16px'
+  },
+  sendIcon: {
+    color: '#2196f3'
   }
 });
 
@@ -72,8 +89,15 @@ class ChatText extends React.Component {
 
     return (
       <section className={classes.root}>
-        <Paper className={classes.textInputPaper} elevation={4}>
-          <Input classes={{ root: classes.textInput }} multiline={true} fullWidth={true} disableUnderline={true} placeholder={"Send a message!"} />
+        <Paper className={classes.chatInputPaper} elevation={4}>
+          <div className={classes.chatInput}>
+            Content will go here..
+          </div>
+        </Paper>
+        <Paper className={classes.composeInputPaper} elevation={4}>
+          <Input classes={{ root: classes.composeInput }} multiline={true} fullWidth={true} disableUnderline={true} placeholder={"Send a message!"} 
+            endAdornment={<SendIcon className={classes.sendIcon} />}
+          />
         </Paper>
       </section>
     );
@@ -82,6 +106,40 @@ class ChatText extends React.Component {
 }
 
 ChatText = withStyles(chatTextStyles)(ChatText);
+
+
+/* -------------------------- */
+
+const chatToolbarStyles = theme => ({
+  chatToolbarRoot: {
+    margin: '8px',
+    backgroundColor: '#0367B4',
+    minHeight: '32px',
+    color: '#FFF'
+  },
+  innerContent: {
+    width: '100%',
+  }
+});
+
+class ChatToolbar extends React.Component {
+
+  render() {
+
+    const { classes } = this.props;
+
+    return (
+      <Toolbar disableGutters={true} className={classes.chatToolbarRoot}>
+        <Typography variant="title" color="inherit">
+          Now talking in "Wonderful Chatroom"
+        </Typography>
+      </Toolbar>
+    );
+  }
+
+}
+
+ChatToolbar = withStyles(chatToolbarStyles)(ChatToolbar);
 
 
 /* -------------------------- */
@@ -114,14 +172,15 @@ class ChatRoom extends React.Component {
       <div className={classes.root}>
         <Paper className={classes.paper} elevation={2}>
           <Grid container spacing={0} className={classes.gridContainer}>
-            <Grid item xs={12} md={2} className={classes.gridItem}>
-              <PeopleList />
-            </Grid>
             <Hidden mdDown>
-              <Grid item md={10} className={classes.gridItem}>
-                <ChatText />
+              <Grid item md={2} className={classes.gridItem}>
+                <PeopleList />
               </Grid>
             </Hidden>
+            <Grid item xs={12} md={10} className={classes.gridItem}>
+              <ChatToolbar />
+              <ChatText />
+            </Grid>
           </Grid>
         </Paper>
       </div>
