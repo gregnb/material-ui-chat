@@ -9,6 +9,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Input from '@material-ui/core/Input';
+import SearchIcon from '@material-ui/icons/Search';
 import SendIcon from '@material-ui/icons/Send';
 import Divider from '@material-ui/core/Divider';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,7 +25,7 @@ const peopleStyles = theme => ({
       backgroundColor: '#FFF'
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#0595DD'
+      backgroundColor: '#025279' //'#23232F' //'#0595DD'
     },
   }
 });
@@ -71,13 +72,23 @@ PeopleList = withStyles(peopleStyles)(PeopleList);
 const chatTextStyles = (theme) => ({
   root: {
     margin: '8px',
-    height: 'calc(100% - 64px)'
+    height: 'calc(100% - 80px)',
   },
   chatInputPaper: {
     height: 'calc(100% - 64px)'
   },
   chatInput: {
-    padding: '16px'
+    overflowY: 'scroll',
+    height: '100%',
+    padding: '16px',
+    // '&::-webkit-scrollbar': {
+    //   width: '8px',
+    //   height: '12px',
+    //   backgroundColor: '#FFF'
+    // },
+    // '&::-webkit-scrollbar-thumb': {
+    //   backgroundColor: '#025279' //'#23232F' //'#0595DD'
+    // },
   },
   composeInputPaper: {
     marginTop: '16px'
@@ -87,6 +98,16 @@ const chatTextStyles = (theme) => ({
   },
   sendIcon: {
     color: '#2196f3'
+  },
+  chatRoomMessage: {
+    display: 'flex',
+    marginBottom: '8px'
+  },
+  messageText: {
+    padding: '8px 0px 0px 16px'
+  },
+  divider: {
+    marginBottom: '8px'
   }
 });
 
@@ -95,16 +116,41 @@ class ChatText extends React.Component {
   render() {
     const { classes } = this.props;
 
+    let images = [
+      { name: 'James Roberts', avatar: 'https://randomuser.me/api/portraits/men/61.jpg', message: 'Can anyone help me out?' },
+      { name: 'Andy Brown', avatar: 'https://randomuser.me/api/portraits/men/62.jpg', message: 'Sure, what is wrong?' },
+      { name: 'Peter Smith', avatar: 'https://randomuser.me/api/portraits/men/63.jpg', message: 'Does anyone know a good plumber?' },
+      { name: 'Jennifer Todd', avatar: 'https://randomuser.me/api/portraits/women/60.jpg', message: 'Hi everyone' } 
+    ];
+
+    for (let i = 0; i < 5; i++) {
+      images = images.concat(images);
+    }
+
     return (
       <section className={classes.root}>
         <Paper className={classes.chatInputPaper} elevation={4}>
           <div className={classes.chatInput}>
-            Content will go here..
+
+            {images.map((item, index) => {
+              return (
+                <React.Fragment>
+                  <div key={index} className={classes.chatRoomMessage}>
+                    <Avatar alt='Remy Sharp' src={item.avatar} />
+                    <div className={classes.messageText}>
+                      {item.message}
+                    </div>
+                  </div>
+                  <Divider className={classes.divider} key={index} />
+                </React.Fragment>
+              );
+            })}
+
           </div>
         </Paper>
         <Paper className={classes.composeInputPaper} elevation={4}>
           <Input classes={{ root: classes.composeInput }} multiline={true} fullWidth={true} disableUnderline={true} placeholder={"Send a message!"} 
-            endAdornment={<SendIcon className={classes.sendIcon} />}
+            endAdornment={<SendIcon className={classes.searchIcon} />}
           />
         </Paper>
       </section>
@@ -123,7 +169,7 @@ const chatToolbarStyles = theme => ({
     color: '#FFF',
     margin: '8px',
     minHeight: '32px',
-    backgroundColor: '#23232F',
+    backgroundColor: '#0377ad', //'#0595DD', //'#23232F',
     borderRadius: '2px'
   },
   innerContent: {
@@ -131,6 +177,29 @@ const chatToolbarStyles = theme => ({
   },
   chatTitle: {
     margin: '0 auto'
+  },
+  searchWrapper: {
+    backgroundColor: '#025279',
+    borderRadius: '3px',
+    border: 'solid 1px #025279',
+    color: '#FFF',
+    margin: '5px'
+  },
+  searchInput: {
+    width: '180px',
+    paddingLeft: '8px',
+    transition: 'width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    '&::placeholder': {
+      color: '#FFF',
+      opacity: 1
+    },
+    '&:focus': {
+      width: '300px'
+    }
+  },
+  searchIcon: {
+    color: '#FFF',
+    marginTop: '3px'
   }
 });
 
@@ -145,6 +214,9 @@ class ChatToolbar extends React.Component {
         <Typography variant="title" className={classes.chatTitle} color="inherit">
           Now talking in "Wonderful Chatroom"
         </Typography>
+        <Input classes={{ root: classes.searchWrapper, input: classes.searchInput }} disableUnderline={true} placeholder={"Search"} 
+          endAdornment={<SearchIcon className={classes.searchIcon} />}
+        />        
       </Toolbar>
     );
   }
@@ -170,6 +242,11 @@ const styles = theme => ({
   },
   gridItem: {
     height: '100%'
+  },
+  '@global': {
+    'body': {
+      fontFamily: '"Roboto"'
+    }
   }
 });
 
